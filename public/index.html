@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Detection System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            min-height: 120px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .detected {
+            background-color: #e8f8f5;
+            border-left: 5px solid #2ecc71;
+        }
+
+        .language-name {
+            font-weight: bold;
+            color: #27ae60;
+            font-size: 20px;
+        }
+
+        .loading {
+            display: none;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #3498db;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Language Detection System</h1>
+
+        <div class="input-group">
+            <textarea id="text-input" placeholder="Enter text in any language..."></textarea>
+        </div>
+
+        <button id="detect-btn">Detect Language</button>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Analyzing text...</p>
+        </div>
+
+        <div class="result detected" id="result">
+            <p>The detected language is: <span class="language-name" id="language-name"></span></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('detect-btn').addEventListener('click', async function () {
+            const text = document.getElementById('text-input').value.trim();
+            const loadingElement = document.getElementById('loading');
+            const resultElement = document.getElementById('result');
+            const languageNameElement = document.getElementById('language-name');
+
+            // Clear previous results
+            resultElement.style.display = 'none';
+            languageNameElement.textContent = '';
+
+            if (!text) {
+                alert('Please enter some text to analyze');
+                return;
+            }
+
+            if (text.length < 3) {
+                alert('Please enter at least 3 characters for accurate detection');
+                return;
+            }
+
+            // Show loading spinner
+            loadingElement.style.display = 'block';
+
+            try {
+                const response = await fetch('http://localhost:5500/detect', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: text })
+                });
+
+                const responseData = await response.json();
+
+                if (!response.ok || !responseData.success) {
+                    const errorMessage = responseData.message || 'Detection failed';
+                    throw new Error(errorMessage);
+                }
+
+                // Display results
+                languageNameElement.textContent =
+                    `${responseData.language} (${(responseData.confidence * 100).toFixed(1)}% confidence)`;
+                resultElement.style.display = 'block';
+
+            } catch (error) {
+                console.error('Detection error:', error);
+                alert(`Error: ${error.message}`);
+            } finally {
+                loadingElement.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>
