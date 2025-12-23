@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Language Detector Pro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+            padding: 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(6, 78, 59, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand i {
+            color: #10b981;
+            font-size: 2rem;
+        }
+
+        .navbar-brand:hover {
+            color: #e2e8f0;
+            text-decoration: none;
+        }
+
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 30px;
+        }
+
+        .navbar-nav li {
+            position: relative;
+        }
+
+        .navbar-nav a {
+            color: #e2e8f0;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .navbar-nav a:hover {
+            color: #ffffff;
+            background: rgba(16, 185, 129, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .navbar-nav a.active {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .navbar-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #10b981;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .navbar-nav a:hover::after,
+        .navbar-nav a.active::after {
+            width: 100%;
+        }
+
+        .navbar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #e2e8f0;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 30px 80px;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 80px;
+            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+            color: white;
+            padding: 80px 30px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="60" cy="40" r="0.5" fill="rgba(255,255,255,0.05)"/></svg>');
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .section {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 60px;
+            padding: 50px;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .section h2 {
+            color: #1e293b;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: #3b82f6;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 2rem;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .content-block {
+            padding: 30px;
+            background: #f8fafc;
+            border-radius: 15px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .content-block h3 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .content-block p {
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .content-block ul {
+            margin-left: 20px;
+            color: #64748b;
+        }
+
+        .content-block li {
+            margin-bottom: 8px;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+            color: white;
+            padding: 60px 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .stat-item {
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #10b981;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .team-section {
+            text-align: center;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .team-member {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+
+        .member-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 2.5rem;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .team-member h4 {
+            color: #1e293b;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .team-member p {
+            color: #64748b;
+            font-style: italic;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+            color: #e2e8f0;
+            padding: 40px 30px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+            margin-top: 60px;
+        }
+
+        .footer h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .footer p {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar-container {
+                padding: 15px 20px;
+            }
+
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+
+            .navbar-nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+                flex-direction: column;
+                gap: 0;
+                padding: 20px 0;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .navbar-nav.active {
+                display: flex;
+            }
+
+            .navbar-nav li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .navbar-nav a {
+                display: block;
+                padding: 15px 20px;
+                margin: 5px 20px;
+                border-radius: 8px;
+            }
+
+            .navbar-toggle {
+                display: block;
+            }
+
+            .main-content {
+                padding: 100px 20px 40px;
+            }
+
+            .hero-section {
+                padding: 60px 20px;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .section {
+                padding: 30px 20px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-language"></i>
+                Language Detector Pro
+            </a>
+
+            <button class="navbar-toggle" id="navbar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <ul class="navbar-nav" id="navbar-nav">
+                <li><a href="index.html" id="nav-home">Home</a></li>
+                <li><a href="about.html" id="nav-about">About</a></li>
+                <li><a href="contact.html" id="nav-contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>About Language Detector Pro</h1>
+            <p>Revolutionizing language processing through cutting-edge AI technology and innovative design</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Mission Section -->
+        <section class="section">
+            <h2>Our Mission</h2>
+            <div class="content-grid">
+                <div class="content-block">
+                    <h3>Breaking Language Barriers</h3>
+                    <p>Language Detector Pro was born from the vision to create a world where language is no longer a barrier to communication. Our mission is to provide accessible, accurate, and fast language detection and translation services that empower individuals and businesses to connect globally.</p>
+                    <p>We believe that effective communication transcends linguistic boundaries, and we're committed to making this vision a reality through innovative technology and user-centric design.</p>
+                </div>
+                <div class="content-block">
+                    <h3>Why Choose Us?</h3>
+                    <ul>
+                        <li><strong>Advanced AI Technology:</strong> State-of-the-art machine learning algorithms for superior accuracy</li>
+                        <li><strong>Multi-Language Support:</strong> Support for 20+ languages including Urdu, Arabic, and more</li>
+                        <li><strong>Real-Time Processing:</strong> Instant results with professional-grade reliability</li>
+                        <li><strong>User-Friendly Interface:</strong> Intuitive design that works seamlessly across devices</li>
+                        <li><strong>Privacy First:</strong> Your data is processed securely and never stored permanently</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section">
+            <h2>Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered Detection</h3>
+                    <p>Advanced neural networks analyze text patterns to identify languages with industry-leading accuracy, supporting complex linguistic structures and dialects.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Global Language Support</h3>
+                    <p>From English to Urdu, Spanish to Arabic, our system supports 20+ languages, making it the most comprehensive language detection tool available.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightning Fast</h3>
+                    <p>Get results in milliseconds with our optimized algorithms and cloud infrastructure, perfect for real-time applications and high-volume processing.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Enterprise Security</h3>
+                    <p>Bank-level security with end-to-end encryption, ensuring your sensitive documents and communications remain completely private and secure.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Optimized</h3>
+                    <p>Responsive design that works perfectly on smartphones, tablets, and desktops, ensuring a consistent experience across all your devices.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Analytics & Insights</h3>
+                    <p>Detailed confidence scores, character counts, and performance metrics to help you understand and improve your language processing workflows.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section class="stats-section">
+            <h2>By the Numbers</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">20+</span>
+                    <span class="stat-label">Languages Supported</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">99.5%</span>
+                    <span class="stat-label">Accuracy Rate</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">< 100ms</span>
+                    <span class="stat-label">Response Time</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Availability</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Section -->
+        <section class="section">
+            <h2>Technology & Innovation</h2>
+            <div class="content-grid">
+                <div class="content-block">
+                    <h3>Advanced Machine Learning</h3>
+                    <p>Our language detection engine uses sophisticated machine learning models trained on millions of text samples across multiple languages. The system employs:</p>
+                    <ul>
+                        <li>Neural network architectures for pattern recognition</li>
+                        <li>Natural language processing techniques</li>
+                        <li>Statistical analysis for confidence scoring</li>
+                        <li>Continuous learning from user interactions</li>
+                    </ul>
+                </div>
+                <div class="content-block">
+                    <h3>Translation Technology</h3>
+                    <p>Our translation service leverages multiple translation engines to ensure maximum accuracy and reliability:</p>
+                    <ul>
+                        <li>Google Translate API integration</li>
+                        <li>Fallback translation systems</li>
+                        <li>Custom translation mappings for common phrases</li>
+                        <li>Real-time translation with context awareness</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="section team-section">
+            <h2>Meet Our Team</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4>AI Research Lead</h4>
+                    <p>Leading the development of our machine learning models and ensuring cutting-edge accuracy in language detection.</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h4>Full-Stack Developer</h4>
+                    <p>Building robust, scalable web applications with modern technologies and user-centric design principles.</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h4>Language Specialist</h4>
+                    <p>Ensuring linguistic accuracy and cultural sensitivity across all supported languages and regions.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>Language Detector Pro</h3>
+            <p>Join thousands of users who trust Language Detector Pro for their language processing needs. Experience the future of language technology today.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar functionality
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        document.getElementById('navbar-toggle').addEventListener('click', function() {
+            document.getElementById('navbar-nav').classList.toggle('active');
+        });
+
+        // Set active nav link
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('nav-about').classList.add('active');
+        });
+    </script>
+</body>
+
+</html>
